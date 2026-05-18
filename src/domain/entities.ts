@@ -1,7 +1,12 @@
+export interface Snippet {
+  id: string;
+  content: string;
+}
+
 export interface Block {
   id: string;
   title: string;
-  content: string;
+  snippets: Snippet[];
 }
 
 export interface Tab {

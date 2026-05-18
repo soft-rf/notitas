@@ -17,7 +17,10 @@ function App() {
     addBlock,
     updateBlock,
     deleteBlock,
-    reorderBlocks
+    reorderBlocks,
+    addSnippet,
+    updateSnippet,
+    deleteSnippet
   } = useWorkspaceState();
 
   const [copiedAll, setCopiedAll] = useState(false);
@@ -28,7 +31,9 @@ function App() {
 
   const handleCopyAll = async () => {
     if (!activeTab || activeTab.blocks.length === 0) return;
-    const textToCopy = activeTab.blocks.map(b => b.content).join('\n\n');
+    const textToCopy = activeTab.blocks
+      .map(b => b.snippets.map(s => s.content).join('\n\n'))
+      .join('\n\n---\n\n');
     try {
       await navigator.clipboard.writeText(textToCopy);
       setCopiedAll(true);
@@ -73,9 +78,15 @@ function App() {
             onReorder={(oldIndex, newIndex) => reorderBlocks(activeTab.id, oldIndex, newIndex)}
             onUpdateBlock={(blockId, fields) => updateBlock(activeTab.id, blockId, fields)}
             onDeleteBlock={(blockId) => deleteBlock(activeTab.id, blockId)}
+            onAddSnippet={(blockId, content) => addSnippet(activeTab.id, blockId, content)}
+            onUpdateSnippet={(blockId, snippetId, content) => updateSnippet(activeTab.id, blockId, snippetId, content)}
+            onDeleteSnippet={(blockId, snippetId) => deleteSnippet(activeTab.id, blockId, snippetId)}
           />
           <NewBlockForm 
-            onAdd={(title, content) => addBlock(activeTab.id, { title, content })}
+            onAdd={(title, content) => addBlock(activeTab.id, { 
+              title, 
+              snippets: [{ id: crypto.randomUUID(), content }] 
+            })}
           />
         </div>
       ) : (

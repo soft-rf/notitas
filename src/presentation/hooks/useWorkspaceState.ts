@@ -67,6 +67,18 @@ export const useWorkspaceState = () => {
     setWorkspace(prev => prev ? UseCases.reorderBlocks(prev, tabId, oldIndex, newIndex) : prev);
   }, []);
 
+  const addSnippet = useCallback((tabId: string, blockId: string, content: string) => {
+    setWorkspace(prev => prev ? UseCases.addSnippetToBlock(prev, tabId, blockId, content) : prev);
+  }, []);
+
+  const updateSnippet = useCallback((tabId: string, blockId: string, snippetId: string, content: string) => {
+    setWorkspace(prev => prev ? UseCases.updateSnippetInBlock(prev, tabId, blockId, snippetId, content) : prev);
+  }, []);
+
+  const deleteSnippet = useCallback((tabId: string, blockId: string, snippetId: string) => {
+    setWorkspace(prev => prev ? UseCases.deleteSnippetFromBlock(prev, tabId, blockId, snippetId) : prev);
+  }, []);
+
   return {
     workspace,
     activeTabId,
@@ -77,6 +89,9 @@ export const useWorkspaceState = () => {
     addBlock,
     updateBlock,
     deleteBlock,
-    reorderBlocks
+    reorderBlocks,
+    addSnippet,
+    updateSnippet,
+    deleteSnippet
   };
 };

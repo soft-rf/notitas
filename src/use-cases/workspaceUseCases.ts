@@ -1,4 +1,4 @@
-import type { Workspace, Block } from '../domain/entities';
+import type { Workspace, Block, Snippet } from '../domain/entities';
 
 export const createDefaultWorkspace = (): Workspace => ({
   tabs: [
@@ -9,7 +9,12 @@ export const createDefaultWorkspace = (): Workspace => ({
         {
           id: crypto.randomUUID(),
           title: '¡Bienvenido a Notitas!',
-          content: 'Aquí puedes guardar todos tus **snippets**. Usa el botón de copiar para llevar este texto al portapapeles.\n\nTambién puedes colapsar esta tarjeta o arrastrarla.'
+          snippets: [
+            {
+              id: crypto.randomUUID(),
+              content: 'Aquí puedes guardar todos tus **snippets**. Usa el botón de copiar para llevar este texto al portapapeles.\n\nTambién puedes colapsar esta tarjeta o arrastrarla.'
+            }
+          ]
         }
       ]
     }
@@ -83,5 +88,75 @@ export const reorderBlocks = (workspace: Workspace, tabId: string, oldIndex: num
       newBlocks.splice(newIndex, 0, movedBlock);
       return { ...tab, blocks: newBlocks };
     })
+  };
+};
+
+// New Snippet Use Cases
+export const addSnippetToBlock = (workspace: Workspace, tabId: string, blockId: string, content: string): Workspace => {
+  return {
+    ...workspace,
+    tabs: workspace.tabs.map(tab => 
+      tab.id === tabId 
+        ? {
+            ...tab,
+            blocks: tab.blocks.map(block => {
+              if (block.id === blockId) {
+                if (block.snippets.length >= 10) return block; // Limit to 10
+                return {
+                  ...block,
+                  snippets: [...block.snippets, { id: crypto.randomUUID(), content }]
+                };
+              }
+              return block;
+            })
+          }
+        : tab
+    )
+  };
+};
+
+export const updateSnippetInBlock = (workspace: Workspace, tabId: string, blockId: string, snippetId: string, newContent: string): Workspace => {
+  return {
+    ...workspace,
+    tabs: workspace.tabs.map(tab => 
+      tab.id === tabId 
+        ? {
+            ...tab,
+            blocks: tab.blocks.map(block => {
+              if (block.id === blockId) {
+                return {
+                  ...block,
+                  snippets: block.snippets.map(snippet => 
+                    snippet.id === snippetId ? { ...snippet, content: newContent } : snippet
+                  )
+                };
+              }
+              return block;
+            })
+          }
+        : tab
+    )
+  };
+};
+
+export const deleteSnippetFromBlock = (workspace: Workspace, tabId: string, blockId: string, snippetId: string): Workspace => {
+  return {
+    ...workspace,
+    tabs: workspace.tabs.map(tab => 
+      tab.id === tabId 
+        ? {
+            ...tab,
+            blocks: tab.blocks.map(block => {
+              if (block.id === blockId) {
+                return {
+                  ...block,
+                  snippets: block.snippets.filter(s => s.id !== snippetId)
+                };
+              }
+              return block;
+            })
+          }
+        : tab
+    )
   };
 };

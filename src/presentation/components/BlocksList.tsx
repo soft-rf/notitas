@@ -8,9 +8,20 @@ interface BlocksListProps {
   onReorder: (oldIndex: number, newIndex: number) => void;
   onUpdateBlock: (id: string, fields: Partial<Omit<Block, 'id'>>) => void;
   onDeleteBlock: (id: string) => void;
+  onAddSnippet: (blockId: string, content: string) => void;
+  onUpdateSnippet: (blockId: string, snippetId: string, content: string) => void;
+  onDeleteSnippet: (blockId: string, snippetId: string) => void;
 }
 
-export const BlocksList: React.FC<BlocksListProps> = ({ blocks, onReorder, onUpdateBlock, onDeleteBlock }) => {
+export const BlocksList: React.FC<BlocksListProps> = ({ 
+  blocks, 
+  onReorder, 
+  onUpdateBlock, 
+  onDeleteBlock,
+  onAddSnippet,
+  onUpdateSnippet,
+  onDeleteSnippet
+}) => {
   if (blocks.length === 0) {
     return (
       <div className="text-center py-12 text-gray-500 border-2 border-dashed border-dark-600 rounded-xl mt-4">
@@ -36,7 +47,14 @@ export const BlocksList: React.FC<BlocksListProps> = ({ blocks, onReorder, onUpd
       >
         {blocks.map(block => (
           <div key={block.id} className="drag-handle cursor-grab active:cursor-grabbing">
-            <BlockCard block={block} onUpdate={onUpdateBlock} onDelete={onDeleteBlock} />
+            <BlockCard 
+              block={block} 
+              onUpdate={onUpdateBlock} 
+              onDelete={onDeleteBlock} 
+              onAddSnippet={onAddSnippet}
+              onUpdateSnippet={onUpdateSnippet}
+              onDeleteSnippet={onDeleteSnippet}
+            />
           </div>
         ))}
       </ReactSortable>
