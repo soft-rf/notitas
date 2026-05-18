@@ -1,4 +1,4 @@
-import type { Workspace, Block, Snippet } from '../domain/entities';
+import type { Workspace, Block } from '../domain/entities';
 
 export const createDefaultWorkspace = (): Workspace => ({
   tabs: [
