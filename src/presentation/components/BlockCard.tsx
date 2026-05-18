@@ -151,7 +151,7 @@ export const BlockCard: React.FC<BlockCardProps> = ({
                 className="w-full mt-2 py-2 rounded-lg border border-dashed border-dark-600 text-gray-400 hover:text-white hover:border-dark-500 hover:bg-dark-700 transition-all flex items-center justify-center gap-2 text-sm font-medium"
               >
                 <Plus size={16} />
-                Añadir texto ({10 - (block.snippets || []).length} restantes)
+                Añadir texto
               </button>
             )
           )}

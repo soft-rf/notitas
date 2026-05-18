@@ -48,10 +48,10 @@ function App() {
       onClick={handleCopyAll}
       disabled={!activeTab || activeTab.blocks.length === 0}
       className={clsx(
-        "flex items-center gap-2 px-4 py-2 rounded-lg font-bold transition-all duration-200",
+        "flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200",
         copiedAll 
           ? "bg-green-500/20 text-green-400" 
-          : "bg-primary-600 hover:bg-primary-500 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+          : "brightness-90 hover:brightness-100 bg-gradient-to-r from-[#FFB347] via-[#EF4444] to-[#8B5CF6] text-white hover:shadow-[0_0_15px_rgba(239,68,68,0.4)] disabled:opacity-50 disabled:hover:shadow-none disabled:cursor-not-allowed"
       )}
     >
       {copiedAll ? <Check size={18} /> : <Copy size={18} />}
